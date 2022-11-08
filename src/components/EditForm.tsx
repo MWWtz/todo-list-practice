@@ -1,25 +1,18 @@
 import { ChangeEvent, FormEvent, useRef, useState } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
-import { Todo } from "../interfaces/Todo";
-
-const initialState = {
-  title: "",
-  completed: false,
-  description: "",
-};
+import { useTodos } from "../hooks/useTodos";
+import { Todo } from "../interfaces/interfaces";
 
 type HandleInputChange = ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
 
 interface Props {
   title: string;
-  addNewTodo: (todo: Todo) => void;
-  editTodo: Todo;
 }
 
-const EditForm = ({ title = "Form", addNewTodo, editTodo }: Props) => {
-  const [todo, setTodo] = useState<Todo>(editTodo);
+const EditForm = ({ title }: Props) => {
+  const [todo, setTodo] = useState<Todo>({} as Todo);
   const inputRef = useRef<HTMLInputElement>(null);
-
+  const { addNewTodo } = useTodos();
   const handleChange = ({ target: { name, value } }: HandleInputChange) => {
     setTodo({ ...todo, [name]: value });
   };
@@ -27,7 +20,6 @@ const EditForm = ({ title = "Form", addNewTodo, editTodo }: Props) => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>): any => {
     e.preventDefault();
     addNewTodo(todo);
-    setTodo(initialState);
     inputRef.current?.focus();
   };
   return (
@@ -44,8 +36,8 @@ const EditForm = ({ title = "Form", addNewTodo, editTodo }: Props) => {
         />
         <input
           type="textarea"
-          name="description"
-          value={todo.description}
+          name="desc"
+          value={todo.desc}
           onChange={handleChange}
           className="form-control mb-3 shadow-none border-0"
         />

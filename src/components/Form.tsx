@@ -1,24 +1,25 @@
 import { ChangeEvent, FormEvent, useRef, useState } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
-import { Todo } from "../interfaces/Todo";
+import { useTodos } from "../hooks/useTodos";
+import { Todo } from "../interfaces/interfaces";
 
-const initialState = {
+const initialState: Todo = {
   title: "",
   completed: false,
-  id: 1,
-  description: "",
+  id: "1",
+  desc: "",
 };
 
 type HandleInputChange = ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
 
 interface Props {
   title: string;
-  addNewTodo: (todo: Todo) => void;
 }
 
-const Form = ({ title = "Form", addNewTodo }: Props) => {
+const Form = ({ title = "Form" }: Props) => {
   const [todo, setTodo] = useState<Todo>(initialState);
   const inputRef = useRef<HTMLInputElement>(null);
+  const { addNewTodo } = useTodos();
 
   const handleChange = ({ target: { name, value } }: HandleInputChange) => {
     setTodo({ ...todo, [name]: value });
@@ -45,8 +46,8 @@ const Form = ({ title = "Form", addNewTodo }: Props) => {
         />
         <input
           type="textarea"
-          name="description"
-          value={todo.description}
+          name="desc"
+          value={todo.desc}
           onChange={handleChange}
           className="form-control shadow-none border-0"
           required

@@ -1,16 +1,11 @@
 import React from "react";
-import { Todo } from "../interfaces/Todo";
+import { Todo } from "../interfaces/interfaces";
 import TodoCard from "./TodoCard";
 import { BiTaskX } from "react-icons/bi";
+import { useTodos } from "../hooks/useTodos";
 
-interface Props {
-  todos: Todo[];
-  deleteTodo: (id: number) => void;
-  getTodo: (id: number) => void;
-  toggleComplete: (id: number) => void;
-}
-
-const TodoList = ({ todos, deleteTodo, getTodo, toggleComplete }: Props) => {
+const TodoList = () => {
+  const { todos } = useTodos();
   if (todos.length === 0)
     return (
       <div className="text-light text-center">
@@ -21,14 +16,8 @@ const TodoList = ({ todos, deleteTodo, getTodo, toggleComplete }: Props) => {
     );
   return (
     <div className="col-md-4">
-      {todos.map((td) => (
-        <TodoCard
-          todo={td}
-          key={td.id}
-          deleteTodo={deleteTodo}
-          getTodo={getTodo}
-          toggleComplete={toggleComplete}
-        />
+      {todos.map((td: Todo) => (
+        <TodoCard todo={td} key={td.id} />
       ))}
     </div>
   );
